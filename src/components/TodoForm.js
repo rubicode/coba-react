@@ -1,11 +1,17 @@
 import { useState } from "react"
+import { addTodo } from "../actions/todos";
+import { useCustomContext } from "./CustomContext";
 
 export default function TodoForm({ add }) {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    const { todoDispatch } = useCustomContext();
+
     const [title, setTitle] = useState('')
 
     const submit = (e) => {
         e.preventDefault()
-        add(title)
+        addTodo(todoDispatch, title, user._id)
         setTitle('')
     }
 

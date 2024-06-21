@@ -10,6 +10,9 @@ import {
 import Login from './components/Login';
 import TodoBox from './components/TodoBox';
 import ErrorPage from './components/ErrorPage';
+import CustomContext from './components/CustomContext';
+import todosReducer from './reducers/todos';
+import { useReducer } from 'react';
 
 const router = createBrowserRouter([
   {
@@ -24,8 +27,17 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const [todoState, todoDispatch] = useReducer(todosReducer, []);
+
+  const providerState = {
+    todoState,
+    todoDispatch
+  }
+
   return (
-    <RouterProvider router={router} />
+    <CustomContext.Provider value={providerState} >
+      <RouterProvider router={router} />
+    </CustomContext.Provider>
   );
 }
 

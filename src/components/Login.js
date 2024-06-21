@@ -13,6 +13,7 @@ export default function Login() {
         try {
             const { data } = await axios.post('http://localhost:3000/users/signin', user)
             localStorage.setItem('user', JSON.stringify(data));
+            axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
             navigate("/todos");
         } catch (error) {
             console.log('gagal login', error)

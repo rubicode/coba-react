@@ -1,15 +1,17 @@
+import { useCustomContext } from "./CustomContext";
 import TodoItem from "./TodoItem"
 
-export default function TodoList({ data, removeTodo, updateTodo, resendTodo }) {
+export default function TodoList() {
+    const { todoState } = useCustomContext();
 
-    const nodeList = data.map(
+    console.log('list',todoState)
+
+    const nodeList = todoState.map(
         (todo, index) => <TodoItem
             key={todo._id}
             no={index + 1}
             todo={todo}
-            remove={removeTodo}
-            update={updateTodo}
-            resend={resendTodo} />
+        />
     )
 
     return (
