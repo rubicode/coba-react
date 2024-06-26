@@ -1,4 +1,4 @@
-export default function todosReducer(state, action) {
+export default function todosReducer(state = [], action) {
     switch (action.type) {
         case 'LOAD_TODO':
             return action.todos.map(item => {
@@ -45,7 +45,6 @@ export default function todosReducer(state, action) {
         case 'REMOVE_TODO':
             return state.filter(todo => todo._id !== action._id)
         case 'UPDATE_TODO':
-            console.log(action)
             return state.map(todo => {
                 if (todo._id === action._id) {
                     todo.title = action.title
@@ -53,6 +52,8 @@ export default function todosReducer(state, action) {
                 }
                 return todo
             })
+        case 'LOAD_TODO_FAILED':
+        case 'UPDATE_TODO_FAILED':
         default:
             return state
 

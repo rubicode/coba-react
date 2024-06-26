@@ -1,44 +1,17 @@
-import { useEffect } from "react"
-import TodoForm from "./TodoForm"
-import TodoList from "./TodoList"
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { loadTodo } from "../actions/todos";
-import { useCustomContext } from "./CustomContext";
+import TodoForm from "../containers/TodoForm"
+import TodoList from "../containers/TodoList"
+import { Navigate } from "react-router-dom";
+import { logout } from "../actions/users";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function TodoBox() {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = useSelector((state) => state.user)
 
-    const navigate = useNavigate();
-
-    const { todoDispatch } = useCustomContext();
-
-    useEffect(() => {
-        if (!user?.token) {
-            console.log('di kick')
-            navigate("/");
-        }
-        loadTodo(todoDispatch, user._id)
-    }, [navigate])
-
-    const logout = async () => {
-        console.log(user.token)
-        try {
-            await axios.post('http://localhost:3000/users/signout', {}, {
-                headers: {
-                    "Authorization": `Bearer ${user.token}`
-                }
-            })
-            localStorage.clear();
-            navigate("/");
-        } catch (error) {
-            console.log(error)
-            alert('gagal logout')
-        }
-    }
+    const dispatch = useDispatch()
 
     return (
         <div className="card">
+            {!user.token && (<Navigate to="/" replace={true} />)}
             <div className="card-header text-center">
                 <h1>Todo List</h1>
             </div>
@@ -48,7 +21,7 @@ export default function TodoBox() {
             <hr />
             <TodoList />
             <div className="card-footer">
-                <button className="btn btn-danger" type="button" onClick={logout}>Logout</button>
+                <button className="btn btn-danger" type="button" onClick={() => dispatch(logout())}>Logout</button>
             </div>
         </div>
     )

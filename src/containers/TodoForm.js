@@ -1,17 +1,17 @@
 import { useState } from "react"
 import { addTodo } from "../actions/todos";
-import { useCustomContext } from "./CustomContext";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function TodoForm({ add }) {
-    const user = JSON.parse(localStorage.getItem('user'));
+export default function TodoForm() {
+    const user = useSelector((state) => state.user)
 
-    const { todoDispatch } = useCustomContext();
+    const dispatch = useDispatch()
 
     const [title, setTitle] = useState('')
 
     const submit = (e) => {
         e.preventDefault()
-        addTodo(todoDispatch, title, user._id)
+        dispatch(addTodo(title, user._id))
         setTitle('')
     }
 

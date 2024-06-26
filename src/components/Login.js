@@ -1,6 +1,7 @@
-import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { login } from "../actions/users";
+import { useDispatch } from "react-redux";
 
 
 export default function Login() {
@@ -8,17 +9,11 @@ export default function Login() {
     const navigate = useNavigate();
     const [user, setUser] = useState({ email: '', password: '' })
 
+    const dispatch = useDispatch()
+
     const submit = async (e) => {
         e.preventDefault()
-        try {
-            const { data } = await axios.post('http://localhost:3000/users/signin', user)
-            localStorage.setItem('user', JSON.stringify(data));
-            axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-            navigate("/todos");
-        } catch (error) {
-            console.log('gagal login', error)
-        }
-
+        dispatch(login(user, navigate));
     }
 
     return (

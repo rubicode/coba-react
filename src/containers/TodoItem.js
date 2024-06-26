@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useCustomContext } from "./CustomContext";
 import { removeTodo, resendTodo, updateTodo } from "../actions/todos";
+import { useDispatch } from "react-redux";
 
 export default function TodoItem({ no, todo }) {
-    const { todoDispatch } = useCustomContext();
+    const dispatch = useDispatch()
 
     const [onEdit, setOnEdit] = useState(false)
     const [title, setTitle] = useState(todo.title)
@@ -33,7 +33,7 @@ export default function TodoItem({ no, todo }) {
                         </select>
                     </td>
                     <td>
-                        <button className="btn btn-primary" type="button" onClick={() => { updateTodo(todoDispatch, todo._id, title, complete); setOnEdit(false) }}>save</button>
+                        <button className="btn btn-primary" type="button" onClick={() => { dispatch(updateTodo(todo._id, title, complete)); setOnEdit(false) }}>save</button>
                         <button className="btn btn-warning" type="button" onClick={() => setOnEdit(false)}>cancel</button>
                     </td>
                 </tr>
@@ -46,7 +46,7 @@ export default function TodoItem({ no, todo }) {
                     <td>{todo.complete ? 'sudah' : 'belum'}</td>
                     <td>
                         <button className="btn btn-success" type="button" onClick={() => setOnEdit(true)}>Edit</button>
-                        <button className="btn btn-danger" type="button" onClick={() => removeTodo(todoDispatch, todo._id)}>Hapus</button>
+                        <button className="btn btn-danger" type="button" onClick={() => dispatch(removeTodo(todo._id))}>Hapus</button>
                     </td>
                 </tr>
             )
@@ -58,7 +58,7 @@ export default function TodoItem({ no, todo }) {
                 <td>{todo.title}</td>
                 <td>{todo.complete ? 'sudah' : 'belum'}</td>
                 <td>
-                    <button className="btn btn-warning" type="button" onClick={() => resendTodo(todoDispatch, todo)}>resend</button>
+                    <button className="btn btn-warning" type="button" onClick={() => dispatch(resendTodo(dispatch, todo))}>resend</button>
                 </td>
             </tr>
         )

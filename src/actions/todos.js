@@ -1,30 +1,21 @@
-import axios from "axios";
+import { api } from "./api"
 
-const user = JSON.parse(localStorage.getItem('user'));
-
-const request = axios.create({
-    baseURL: 'http://localhost:3000/',
-    timeout: 1000,
-    headers: { "Authorization": `Bearer ${user?.token}` }
-});
-
-export const loadTodo = async (dispatch, executor) => {
-    console.log('jalan', executor)
+export const loadTodo = (executor) => async (dispatch, getState) => {
     try {
-        const { data } = await request.get('todos', {
+        const { data } = await api.get('todos', {
             params: {
                 executor
             }
         })
-        console.log('jalan', executor)
+
         dispatch({ type: 'LOAD_TODO', todos: data.todos })
     } catch (error) {
         console.log(error)
-        alert('gagal load data')
+        dispatch({ type: 'LOAD_TODO_FAILED', todos: getState().todos })
     }
 }
 
-export const addTodo = async (dispatch, title, executor) => {
+export const addTodo = (title, executor) => async dispatch => {
     const _id = Date.now().toString()
     try {
         dispatch({
@@ -33,7 +24,7 @@ export const addTodo = async (dispatch, title, executor) => {
             title,
             executor
         })
-        const { data } = await request.post('todos', {
+        const { data } = await api.post('todos', {
             title,
             executor
         })
@@ -51,9 +42,9 @@ export const addTodo = async (dispatch, title, executor) => {
     }
 }
 
-export const resendTodo = async (dispatch, { _id, title, executor }) => {
+export const resendTodo = ({ _id, title, executor }) => async dispatch => {
     try {
-        const { data } = await request.post('todos', {
+        const { data } = await api.post('todos', {
             title,
             executor
         })
@@ -67,9 +58,9 @@ export const resendTodo = async (dispatch, { _id, title, executor }) => {
     }
 }
 
-export const removeTodo = async (dispatch, _id) => {
+export const removeTodo = (_id) => async dispatch => {
     try {
-        const { data } = await request.delete(`todos/${_id}`)
+        const { data } = await api.delete(`todos/${_id}`)
         dispatch({
             type: 'REMOVE_TODO',
             _id: data._id
@@ -80,9 +71,9 @@ export const removeTodo = async (dispatch, _id) => {
     }
 }
 
-export const updateTodo = async (dispatch, _id, title, complete) => {
+export const updateTodo = (_id, title, complete) => async dispatch => {
     try {
-        const { data } = await request.put(`todos/${_id}`, {
+        const { data } = await api.put(`todos/${_id}`, {
             title,
             complete
         })
@@ -94,7 +85,9 @@ export const updateTodo = async (dispatch, _id, title, complete) => {
         })
     } catch (error) {
         console.log(error)
-        alert('gagal update data')
+        dispatch({
+            type: 'UPDATE_TODO_FAILED'
+        })
     }
 
 }

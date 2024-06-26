@@ -1,12 +1,20 @@
-import { useCustomContext } from "./CustomContext";
+import { useEffect } from "react";
 import TodoItem from "./TodoItem"
+import { useDispatch, useSelector } from "react-redux";
+import { loadTodo } from "../actions/todos";
 
 export default function TodoList() {
-    const { todoState } = useCustomContext();
 
-    console.log('list',todoState)
+    const todos = useSelector((state) => state.todos)
+    const user = useSelector((state) => state.user)
 
-    const nodeList = todoState.map(
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(loadTodo(user._id))
+    }, [dispatch, user])
+
+    const nodeList = todos.map(
         (todo, index) => <TodoItem
             key={todo._id}
             no={index + 1}
