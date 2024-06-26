@@ -7,26 +7,12 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import Login from './components/Login';
-import TodoBox from './components/TodoBox';
+import Login from './features/users/Login';
+import TodoBox from './features/todos/TodoBox';
 import ErrorPage from './components/ErrorPage';
-import { legacy_createStore as createStore, applyMiddleware } from 'redux';
-import { thunk } from 'redux-thunk';
-import rootReducer from './reducers';
 import { Provider } from 'react-redux';
-
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import { store, persistor } from './store';
 import { PersistGate } from 'redux-persist/integration/react'
-
-const persistConfig = {
-  key: 'root',
-  storage,
-}
-
-const persistedReducer = persistReducer(persistConfig, rootReducer)
-const store = createStore(persistedReducer, applyMiddleware(thunk))
-const persistor = persistStore(store)
 
 const router = createBrowserRouter([
   {

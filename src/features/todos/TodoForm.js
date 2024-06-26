@@ -1,9 +1,10 @@
 import { useState } from "react"
-import { addTodo } from "../actions/todos";
 import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "../users/userSlice";
+import { createTodo } from "./todosSlice";
 
 export default function TodoForm() {
-    const user = useSelector((state) => state.user)
+    const user = useSelector(selectUser)
 
     const dispatch = useDispatch()
 
@@ -11,7 +12,7 @@ export default function TodoForm() {
 
     const submit = (e) => {
         e.preventDefault()
-        dispatch(addTodo(title, user._id))
+        dispatch(createTodo(title, user._id))
         setTitle('')
     }
 

@@ -1,17 +1,18 @@
 import { useEffect } from "react";
 import TodoItem from "./TodoItem"
 import { useDispatch, useSelector } from "react-redux";
-import { loadTodo } from "../actions/todos";
+import { loadTodoAsync, selectTodos } from "./todosSlice";
+import { selectUser } from "../users/userSlice";
 
 export default function TodoList() {
 
-    const todos = useSelector((state) => state.todos)
-    const user = useSelector((state) => state.user)
+    const todos = useSelector(selectTodos)
+    const user = useSelector(selectUser)
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(loadTodo(user._id))
+        dispatch(loadTodoAsync(user._id))
     }, [dispatch, user])
 
     const nodeList = todos.map(

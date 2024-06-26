@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { removeTodo, resendTodo, updateTodo } from "../actions/todos";
 import { useDispatch } from "react-redux";
+import { removeTodoAsync, resendTodoAsync, updateTodoAsync } from "./todosSlice";
 
 export default function TodoItem({ no, todo }) {
     const dispatch = useDispatch()
@@ -33,7 +33,7 @@ export default function TodoItem({ no, todo }) {
                         </select>
                     </td>
                     <td>
-                        <button className="btn btn-primary" type="button" onClick={() => { dispatch(updateTodo(todo._id, title, complete)); setOnEdit(false) }}>save</button>
+                        <button className="btn btn-primary" type="button" onClick={() => { dispatch(updateTodoAsync({ _id: todo._id, title, complete })); setOnEdit(false) }}>save</button>
                         <button className="btn btn-warning" type="button" onClick={() => setOnEdit(false)}>cancel</button>
                     </td>
                 </tr>
@@ -46,7 +46,7 @@ export default function TodoItem({ no, todo }) {
                     <td>{todo.complete ? 'sudah' : 'belum'}</td>
                     <td>
                         <button className="btn btn-success" type="button" onClick={() => setOnEdit(true)}>Edit</button>
-                        <button className="btn btn-danger" type="button" onClick={() => dispatch(removeTodo(todo._id))}>Hapus</button>
+                        <button className="btn btn-danger" type="button" onClick={() => dispatch(removeTodoAsync(todo._id))}>Hapus</button>
                     </td>
                 </tr>
             )
@@ -58,7 +58,7 @@ export default function TodoItem({ no, todo }) {
                 <td>{todo.title}</td>
                 <td>{todo.complete ? 'sudah' : 'belum'}</td>
                 <td>
-                    <button className="btn btn-warning" type="button" onClick={() => dispatch(resendTodo(dispatch, todo))}>resend</button>
+                    <button className="btn btn-warning" type="button" onClick={() => dispatch(resendTodoAsync(todo))}>resend</button>
                 </td>
             </tr>
         )

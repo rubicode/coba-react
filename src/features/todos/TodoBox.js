@@ -1,11 +1,11 @@
-import TodoForm from "../containers/TodoForm"
-import TodoList from "../containers/TodoList"
+import TodoForm from "./TodoForm"
+import TodoList from "./TodoList"
 import { Navigate } from "react-router-dom";
-import { logout } from "../actions/users";
 import { useDispatch, useSelector } from "react-redux";
+import { logoutUser, selectUser } from "../users/userSlice";
 
 export default function TodoBox() {
-    const user = useSelector((state) => state.user)
+    const user = useSelector(selectUser)
 
     const dispatch = useDispatch()
 
@@ -21,7 +21,7 @@ export default function TodoBox() {
             <hr />
             <TodoList />
             <div className="card-footer">
-                <button className="btn btn-danger" type="button" onClick={() => dispatch(logout())}>Logout</button>
+                <button className="btn btn-danger" type="button" onClick={() => dispatch(logoutUser())}>Logout</button>
             </div>
         </div>
     )

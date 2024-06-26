@@ -1,23 +1,24 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
-import { login } from "../actions/users";
-import { useDispatch } from "react-redux";
+import { Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, selectUser } from "./userSlice";
 
 
 export default function Login() {
 
-    const navigate = useNavigate();
     const [user, setUser] = useState({ email: '', password: '' })
+    const userData = useSelector(selectUser)
 
     const dispatch = useDispatch()
 
     const submit = async (e) => {
         e.preventDefault()
-        dispatch(login(user, navigate));
+        dispatch(loginUser(user));
     }
 
     return (
         <div className="container">
+            {userData.token && (<Navigate to="/todos" replace={true} />)}
             <div className="card">
                 <div className="card-header text-center">
                     <h1>Sign In</h1>
